@@ -1,33 +1,48 @@
-import { useEffect, useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import { AuthProvider, useAuth } from './auth/AuthProvider';
+import { isConfigured } from './lib/supabase';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import ChangePassword from './pages/ChangePassword';
+import Users from './pages/Users';
+import ComingSoon from './pages/ComingSoon';
 
-// Placeholder page until milestone 3. Shows whether the NAS gateway is reachable,
-// using VITE_SUPABASE_URL when it is set in Vercel.
-const API_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
-
-type Status = 'unset' | 'checking' | 'ok' | 'down';
+// Anyone holding a temporary password goes to the change screen first.
+function Gate({ children }: { children: ReactNode }) {
+  const { ready, mustChangePassword } = useAuth();
+  const { pathname } = useLocation();
+  if (!ready) return <p className="muted boot">טוען...</p>;
+  if (mustChangePassword && pathname !== '/change-password') return <Navigate to="/change-password" replace />;
+  return <>{children}</>;
+}
 
 export default function App() {
-  const [status, setStatus] = useState<Status>(API_URL ? 'checking' : 'unset');
-
-  useEffect(() => {
-    if (!API_URL) return;
-    fetch(`${API_URL.replace(/\/+$/, '')}/auth/v1/health`)
-      .then((r) => setStatus(r.ok ? 'ok' : 'down'))
-      .catch(() => setStatus('down'));
-  }, []);
-
-  const label: Record<Status, string> = {
-    unset: 'כתובת השרת עוד לא הוגדרה',
-    checking: 'בודק חיבור לשרת...',
-    ok: 'השרת מחובר',
-    down: 'אין חיבור לשרת',
-  };
-
+  if (!isConfigured) {
+    return <div className="notice boot">כתובת השרת לא הוגדרה (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY).</div>;
+  }
   return (
-    <main className="page">
-      <h1>מערכת הושבה</h1>
-      <p>המערכת בהקמה.</p>
-      <p className={`status status-${status}`}>{label[status]}</p>
-    </main>
+    <AuthProvider>
+      <BrowserRouter>
+        <Gate>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="login" element={<Login />} />
+              <Route path="change-password" element={<ChangePassword />} />
+              <Route path="users" element={<Users />} />
+              <Route path="map" element={<ComingSoon />} />
+              <Route path="free" element={<ComingSoon />} />
+              <Route path="reports" element={<ComingSoon />} />
+              <Route path="org" element={<ComingSoon />} />
+              <Route path="data" element={<ComingSoon />} />
+              <Route path="settings" element={<ComingSoon />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Route>
+          </Routes>
+        </Gate>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
