@@ -14,8 +14,8 @@ export const NAV: NavItem[] = [
   { to: '/map', label: 'מפה', ready: false, who: 'all' },
   { to: '/free', label: 'פנויים', ready: false, who: 'all' },
   { to: '/reports', label: 'דוחות', ready: false, who: 'all' },
-  { to: '/org', label: 'מבנה ארגוני', ready: false, who: 'manager' },
-  { to: '/data', label: 'נתונים', ready: false, who: 'manager' },
+  { to: '/org', label: 'מבנה ארגוני', ready: true, who: 'manager' },
+  { to: '/data', label: 'נתונים', ready: true, who: 'manager' },
   { to: '/users', label: 'משתמשים', ready: true, who: 'admin' },
   { to: '/settings', label: 'הגדרות', ready: false, who: 'admin' },
 ];

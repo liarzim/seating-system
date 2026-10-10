@@ -8,6 +8,8 @@ import Login from './pages/Login';
 import ChangePassword from './pages/ChangePassword';
 import Users from './pages/Users';
 import ComingSoon from './pages/ComingSoon';
+import Org from './pages/Org';
+import DataPage from './pages/DataPage';
 
 // Anyone holding a temporary password goes to the change screen first.
 function Gate({ children }: { children: ReactNode }) {
@@ -35,8 +37,8 @@ export default function App() {
               <Route path="map" element={<ComingSoon />} />
               <Route path="free" element={<ComingSoon />} />
               <Route path="reports" element={<ComingSoon />} />
-              <Route path="org" element={<ComingSoon />} />
-              <Route path="data" element={<ComingSoon />} />
+              <Route path="org" element={<Org />} />
+              <Route path="data" element={<DataPage />} />
               <Route path="settings" element={<ComingSoon />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
