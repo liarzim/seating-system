@@ -1,0 +1,18 @@
+# Private NAS setup: compose, secrets, scripts. Never committed.
+nas-setup/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies and builds
+node_modules/
+dist/
+.vercel/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,20 @@
+:root {
+  --bg: #f7f7f5;
+  --text: #1f1f1f;
+  --muted: #666;
+  --ok: #1a7f37;
+  --bad: #b42318;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #18181b; --text: #f2f2f2; --muted: #a1a1aa; --ok: #4ade80; --bad: #f87171; }
+}
+body { margin: 0; }
+.page { max-width: 640px; margin: 0 auto; padding: 48px 16px; }
+h1 { margin: 0 0 8px; }
+p { color: var(--muted); }
+.status { font-weight: 600; }
+.status-ok { color: var(--ok); }
+.status-down { color: var(--bad); }
